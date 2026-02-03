@@ -26,6 +26,7 @@ export default [
     'avgRtpStatsN',
     'backgroundAlpha',
     'brandingRoomAlias',
+    'broadcastMode',
     'breakoutRooms',
     'bridgeChannel',
     'buttonsWithNotifyClick',

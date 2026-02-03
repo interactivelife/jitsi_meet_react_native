@@ -209,6 +209,12 @@ export interface IConfig {
         ignoreDomain?: string;
         preferSctp?: boolean;
     };
+
+    /**
+     * Broadcast mode - when enabled, the LargeVideo will always show the local participant's video.
+     */
+    broadcastMode?: boolean;
+
     buttonsWithNotifyClick?: Array<ButtonsWithNotifyClick | {
         key: ButtonsWithNotifyClick;
         preventExecution: boolean;

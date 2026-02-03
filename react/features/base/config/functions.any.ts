@@ -203,7 +203,15 @@ export function getWhitelistedJSON(configName: 'interfaceConfig' | 'config', con
     if (configName === 'interfaceConfig') {
         return pick(configJSON, INTERFACE_CONFIG_WHITELIST);
     } else if (configName === 'config') {
-        return pick(configJSON, CONFIG_WHITELIST);
+        const result = pick(configJSON, CONFIG_WHITELIST);
+
+        // BROADCAST MODE FIX: Explicitly allow broadcastMode to bypass whitelist filtering
+        if (configJSON.broadcastMode !== undefined) {
+            logger.info(`[BroadcastMode] Preserving broadcastMode: ${configJSON.broadcastMode}`);
+            result.broadcastMode = configJSON.broadcastMode;
+        }
+
+        return result;
     }
 
     return configJSON;

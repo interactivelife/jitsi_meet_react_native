@@ -49,6 +49,13 @@ export function isFilmstripVisible(stateful: IStateful) {
  * in the filmstrip, then {@code true}; otherwise, {@code false}.
  */
 export function shouldRemoteVideosBeVisible(state: IReduxState) {
+    // BROADCAST MODE: Hide filmstrip entirely in broadcast mode
+    // Only the large video (broadcaster) should be visible
+    const { broadcastMode } = state['features/base/config'];
+    if (broadcastMode) {
+        return false;
+    }
+
     if (state['features/invite'].calleeInfoVisible) {
         return false;
     }

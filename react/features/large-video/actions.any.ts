@@ -19,6 +19,7 @@ import {
     SET_LARGE_VIDEO_DIMENSIONS,
     UPDATE_KNOWN_LARGE_VIDEO_RESOLUTION
 } from './actionTypes';
+import logger from './logger';
 
 /**
  * Action to select the participant to be displayed in LargeVideo based on the
@@ -43,7 +44,14 @@ export function selectParticipantInLargeVideo(participant?: string) {
             return;
         }
 
-        const participantId = participant ?? _electParticipantInLargeVideo(state);
+        const config = state['features/base/config'];
+        const broadcastMode = config?.broadcastMode;
+
+        // BROADCAST MODE FIX: If broadcast mode is enabled, we ALWAYS want to elect the participant
+        // regardless of whether one was passed in. This prevents dominant speaker or other
+        // logic from switching away from the broadcaster.
+        const participantId = (broadcastMode || !participant) ? _electParticipantInLargeVideo(state) : participant;
+        
         const largeVideo = state['features/large-video'];
         const remoteScreenShares = state['features/video-layout'].remoteScreenShares;
         let latestScreenshareParticipantId;
@@ -52,13 +60,10 @@ export function selectParticipantInLargeVideo(participant?: string) {
             latestScreenshareParticipantId = remoteScreenShares[remoteScreenShares.length - 1];
         }
 
-        // When trying to auto pin screenshare, always select the endpoint even though it happens to be
-        // the large video participant in redux (for the reasons listed above in the large video selection
-        // logic above). The auto pin screenshare logic kicks in after the track is added
-        // (which updates the large video participant and selects all endpoints because of the auto tile
-        // view mode). If the screenshare endpoint is not among the forwarded endpoints from the bridge,
-        // it needs to be selected again at this point.
         if (participantId !== largeVideo.participantId || participantId === latestScreenshareParticipantId) {
+            if (broadcastMode) {
+                logger.info(`[BroadcastMode] Selecting participant for large video: ${participantId}`);
+            }
             dispatch({
                 type: SELECT_LARGE_VIDEO_PARTICIPANT,
                 participantId
@@ -137,6 +142,45 @@ function _electLastVisibleRemoteParticipant(stateful: IStateful) {
  * @returns {(string|undefined)}
  */
 function _electParticipantInLargeVideo(state: IReduxState) {
+    const config = state['features/base/config'];
+    
+    // BROADCAST MODE: Check if broadcast mode is enabled via config
+    const broadcastMode = config?.broadcastMode;
+    
+    if (broadcastMode) {
+        const localParticipant = getLocalParticipant(state);
+        const tracks = state['features/base/tracks'];
+        
+        // Check if we have local video enabled (indicates we're the broadcaster)
+        const hasLocalVideo = tracks.some(track => 
+            track.local && track.mediaType === MEDIA_TYPE.VIDEO && !track.muted
+        );
+        
+        logger.info(`[BroadcastMode] Election running. localId: ${localParticipant?.id}, hasLocalVideo: ${hasLocalVideo}, localStreamCount: ${tracks.filter(t => t.local).length}`);
+
+        if (hasLocalVideo && localParticipant) {
+            // We're the broadcaster - show our own video
+            logger.info(`[BroadcastMode] Broadcaster detected (${localParticipant.id}) - staying on local video`);
+            return localParticipant.id;
+        }
+        
+        // We're a viewer - show the first remote participant with video (the broadcaster)
+        const lastVisibleRemoteParticipant = _electLastVisibleRemoteParticipant(state);
+        if (lastVisibleRemoteParticipant) {
+            logger.info(`[BroadcastMode] Viewer detected - showing remote broadcaster: ${lastVisibleRemoteParticipant.id}`);
+            return lastVisibleRemoteParticipant.id;
+        }
+        
+        // Fallback to local participant if no remote video available yet
+        if (localParticipant) {
+            logger.info(`[BroadcastMode] No remote video yet - using local as fallback: ${localParticipant.id}`);
+            return localParticipant.id;
+        }
+    } else {
+        // Log config state only once in a while or if we want to debug
+        // logger.info(`[BroadcastMode] Not enabled. Config: ${JSON.stringify(config)}`);
+    }
+
     // If a participant is pinned, they will be shown in the LargeVideo (regardless of whether they are local or
     // remote) when the filmstrip on stage is disabled.
     let participant = getPinnedParticipant(state);
