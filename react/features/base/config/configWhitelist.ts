@@ -216,6 +216,7 @@ export default [
     'recordings.suggestRecording',
     'replaceParticipant',
     'resolution',
+    'isCipherCall',
     'screenshotCapture',
     'securityUi',
     'speakerStats',

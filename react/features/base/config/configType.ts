@@ -456,6 +456,7 @@ export interface IConfig {
         security: string;
         terms: string;
     };
+    isCipherCall?: boolean;
     liveStreaming?: {
         dataPrivacyLink?: string;
         enabled?: boolean;

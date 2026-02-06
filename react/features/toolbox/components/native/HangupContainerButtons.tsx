@@ -8,9 +8,19 @@ import HangupButton from '../HangupButton';
 import HangupMenuButton from './HangupMenuButton';
 
 const HangupContainerButtons = (props: AbstractButtonProps) => {
-    // BROADCAST MODE FIX: We always want to show the direct HangupButton
-    // to skip the "End Meeting / Leave Meeting" menu as requested by the user.
+    const isCipherCall = useSelector((state: IReduxState) => state['features/base/config'].isCipherCall);
+
+    // DEBUG LOG
+    // @ts-ignore
+    console.log(`[HangupContainerButtons] isCipherCall: ${isCipherCall}`);
+
+    if (isCipherCall) {
+        return <HangupMenuButton />;
+    }
+
     return <HangupButton { ...props } />;
 };
 
 export default HangupContainerButtons;
+
+

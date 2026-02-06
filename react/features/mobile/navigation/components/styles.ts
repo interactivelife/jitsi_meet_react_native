@@ -45,7 +45,9 @@ export const navigationStyles = {
     },
 
     connectingScreenText: {
-        color: TEXT_COLOR
+        color: TEXT_COLOR,
+        marginHorizontal: BaseTheme.spacing[3],
+        textAlign: 'center'
     },
 
     headerNavigationButton: {

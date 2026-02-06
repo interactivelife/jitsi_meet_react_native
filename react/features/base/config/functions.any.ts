@@ -207,8 +207,8 @@ export function getWhitelistedJSON(configName: 'interfaceConfig' | 'config', con
 
         // BROADCAST MODE FIX: Explicitly allow broadcastMode to bypass whitelist filtering
         if (configJSON.broadcastMode !== undefined) {
-            logger.info(`[BroadcastMode] Preserving broadcastMode: ${configJSON.broadcastMode}`);
-            result.broadcastMode = configJSON.broadcastMode;
+             logger.info(`[BroadcastMode] Preserving broadcastMode: ${configJSON.broadcastMode}`);
+             result.broadcastMode = configJSON.broadcastMode;
         }
 
         return result;
