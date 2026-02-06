@@ -43,6 +43,7 @@
         "meetingEnded": "ミーティングは終了しています。"
     },
     "breakoutRooms": {
+        "buttonLabel": "ブレイクアウトルーム",
         "actions": {
             "add": "ブレイクアウトルームを追加",
             "autoAssign": "ブレイクアウトルームに自動割り当て",
@@ -206,6 +207,8 @@
         "IamHost": "私はホストです",
         "Ok": "OK",
         "Remove": "除去",
+        "Save": "保存",
+        "save": "保存",
         "Share": "共有",
         "Submit": "投稿",
         "WaitForHostMsg": "ミーティング はまだ開始されていません。あなたがホストの場合は、認証を行ってください。それ以外の場合は、ホストの到着をお待ちください。",
@@ -674,6 +677,7 @@
             "askUnmute": "ミュート解除を依頼",
             "audioModeration": "ミュートを自分で解除",
             "blockEveryoneMicCamera": "全員のマイクとカメラをブロック",
+            "breakoutRooms": "ブレイクアウトルーム",
             "invite": "参加者招待",
             "moreModerationActions": "管理オプションをさらに表示",
             "moreModerationControls": "管理コントロールをさらに表示",
@@ -713,6 +717,7 @@
             "pollQuestion": "投票の質問",
             "questionPlaceholder": "質問を入力してください",
             "removeOption": "選択肢の削除",
+            "save": "保存",
             "send": "送信"
         },
         "errors": {
@@ -920,6 +925,7 @@
         "advanced": "詳細",
         "alertCancel": "キャンセル",
         "alertOk": "OK",
+        "apply": "保存",
         "alertTitle": "警告",
         "alertURLText": "入力されたサーバー URL は無効です",
         "buildInfoSection": "ビルド情報",
@@ -989,6 +995,8 @@
             "document": "共有ドキュメントの切り替え",
             "download": "アプリのダウンロード",
             "embedMeeting": "ミーティングの埋め込み",
+            "endConference": "全員のミーティングを終了",
+            "enterFullScreen": "フルスクリーン表示",
             "expand": "展開",
             "feedback": "フィードバックを残す",
             "fullScreen": "全画面の切り替え",
@@ -998,6 +1006,7 @@
             "invite": "人を招待",
             "kick": "参加者を追放",
             "laugh": "笑",
+            "leaveConference": "ミーティングから退出",
             "like": "いいね!",
             "lobbyButton": "ロビーモードの有効 / 無効",
             "localRecording": "ローカル録画コントロールの切り替え",
@@ -1054,6 +1063,7 @@
         "download": "アプリのダウンロード",
         "e2ee": "エンドツーエンドの暗号化",
         "embedMeeting": "ミーティングの埋め込み",
+        "endConference": "全員のミーティングを終了",
         "enterFullScreen": "フルスクリーン表示",
         "enterTileView": "タイルビューを開始",
         "exitFullScreen": "フルスクリーンを終了",
@@ -1065,6 +1075,7 @@
         "joinBreakoutRoom": "ブレイクアウトルームに参加",
         "laugh": "笑",
         "leaveBreakoutRoom": "ブレイクアウトルームを退出",
+        "leaveConference": "ミーティングから退出",
         "like": "いいね!",
         "lobbyButtonDisable": "ロビーモードを無効",
         "lobbyButtonEnable": "ロビーモードを有効",

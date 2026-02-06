@@ -5,8 +5,8 @@ const BUTTON_HEIGHT = BaseTheme.spacing[7];
 const button = {
     borderRadius: BaseTheme.shape.borderRadius,
     display: 'flex',
-    height: BUTTON_HEIGHT,
-    justifyContent: 'center'
+    justifyContent: 'center',
+    minHeight: BUTTON_HEIGHT,
 };
 
 const buttonLabel = {
@@ -28,7 +28,7 @@ export default {
     },
 
     buttonContent: {
-        height: BUTTON_HEIGHT
+        minHeight: BUTTON_HEIGHT
     },
 
     buttonDisabled: {

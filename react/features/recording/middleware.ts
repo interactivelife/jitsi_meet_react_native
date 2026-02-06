@@ -18,7 +18,7 @@ import {
     setVideoUnmutePermissions
 } from '../base/media/actions';
 import { MEDIA_TYPE } from '../base/media/constants';
-import { PARTICIPANT_UPDATED } from '../base/participants/actionTypes';
+import { PARTICIPANT_JOINED, PARTICIPANT_UPDATED } from '../base/participants/actionTypes';
 import { updateLocalRecordingStatus } from '../base/participants/actions';
 import { PARTICIPANT_ROLE } from '../base/participants/constants';
 import { getLocalParticipant, getParticipantDisplayName } from '../base/participants/functions';
@@ -57,6 +57,7 @@ import {
     START_RECORDING_NOTIFICATION_ID
 } from './constants';
 import {
+    getActiveSession,
     getResourceId,
     getSessionById,
     registerRecordingAudioFiles,
@@ -128,15 +129,41 @@ MiddlewareRegistry.register(({ dispatch, getState }) => next => action => {
 
     case CONFERENCE_JOINED: {
         const { conference } = action;
+        // Check if there are other participants already in the call
+        const participants = conference.getParticipants();
 
-        // Auto-start recording
-        try {
-            logger.info('Auto-starting recording on conference join');
-            conference.startRecording({
-                mode: JitsiRecordingConstants.mode.FILE
-            });
-        } catch (error) {
-            logger.error('Failed to auto-start recording', error);
+        if (participants.length > 0) {
+            // Auto-start recording if there are already participants
+            try {
+                logger.info('Auto-starting recording on conference join (participants present)');
+                conference.startRecording({
+                    mode: JitsiRecordingConstants.mode.FILE
+                });
+            } catch (error) {
+                logger.error('Failed to auto-start recording', error);
+            }
+        }
+        break;
+    }
+
+    case PARTICIPANT_JOINED: {
+        const { conference } = getState()['features/base/conference'];
+
+        // Only auto-start if we are in a conference
+        if (conference) {
+            // Check if there is an active recording session
+            const isRecording = getActiveSession(getState(), JitsiRecordingConstants.mode.FILE);
+
+            if (!isRecording) {
+                try {
+                    logger.info('Auto-starting recording on participant join');
+                    conference.startRecording({
+                        mode: JitsiRecordingConstants.mode.FILE
+                    });
+                } catch (error) {
+                    logger.error('Failed to auto-start recording on participant join', error);
+                }
+            }
         }
         break;
     }
