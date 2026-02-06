@@ -4,7 +4,7 @@ import { createRecordingEvent } from '../analytics/AnalyticsEvents';
 import { sendAnalytics } from '../analytics/functions';
 import { IStore } from '../app/types';
 import { APP_WILL_MOUNT, APP_WILL_UNMOUNT } from '../base/app/actionTypes';
-import { CONFERENCE_JOIN_IN_PROGRESS } from '../base/conference/actionTypes';
+import { CONFERENCE_JOIN_IN_PROGRESS, CONFERENCE_JOINED } from '../base/conference/actionTypes';
 import { getCurrentConference } from '../base/conference/functions';
 import { openDialog } from '../base/dialog/actions';
 import JitsiMeetJS, {
@@ -123,6 +123,21 @@ MiddlewareRegistry.register(({ dispatch, getState }) => next => action => {
                 return;
             });
 
+        break;
+    }
+
+    case CONFERENCE_JOINED: {
+        const { conference } = action;
+
+        // Auto-start recording
+        try {
+            logger.info('Auto-starting recording on conference join');
+            conference.startRecording({
+                mode: JitsiRecordingConstants.mode.FILE
+            });
+        } catch (error) {
+            logger.error('Failed to auto-start recording', error);
+        }
         break;
     }
 

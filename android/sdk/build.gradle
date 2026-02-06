@@ -126,7 +126,13 @@ android.libraryVariants.all { def variant ->
 
         // Set up inputs and outputs so gradle can cache the result
         def reactRoot = file("${projectDir}/../../")
-        inputs.files fileTree(dir: reactRoot, excludes: ["android/**", "ios/**"])
+        inputs.files fileTree(dir: reactRoot, excludes: [
+            "android/**", 
+            "ios/**", 
+            "**/build/**", 
+            "**/node_modules/**/android/**", 
+            "**/node_modules/**/ios/**"
+        ])
         outputs.dir jsBundleDir
         outputs.dir resourcesDir
 
@@ -210,9 +216,8 @@ android.libraryVariants.all { def variant ->
                     "lintReportDebug",
                     "lintAnalyzeDebug"
                 ].each { taskName ->
-                    if (subproject.tasks.findByName(taskName)) {
-                        currentBundleTask.dependsOn(subproject.tasks.named(taskName))
-                    }
+                    // Use string paths to avoid eager lookup issues
+                    currentBundleTask.dependsOn(":${subproject.name}:${taskName}")
                 }
 
                 // Also depend on the main build task to ensure all sub-tasks are completed
@@ -315,5 +320,11 @@ publishing {
                 }
             }
         }
+    }
+}
+
+afterEvaluate {
+    tasks.named("publishAarArchivePublicationToMavenLocal") {
+        dependsOn("bundleReleaseAar")
     }
 }
