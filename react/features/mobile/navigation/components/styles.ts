@@ -47,7 +47,10 @@ export const navigationStyles = {
     connectingScreenText: {
         color: TEXT_COLOR,
         marginHorizontal: BaseTheme.spacing[3],
-        textAlign: 'center'
+        textAlign: 'center' as const,
+        paddingHorizontal: BaseTheme.spacing[2],
+        flexShrink: 1,
+        maxWidth: '80%' as const
     },
 
     headerNavigationButton: {
@@ -112,5 +115,10 @@ export const navigationStyles = {
         ...BaseTheme.typography.bodyShortBold,
         alignSelf: 'center',
         color: BaseTheme.palette.text04
+    },
+
+    safeArea: {
+        alignItems: 'center',
+        width: '100%'
     }
 };

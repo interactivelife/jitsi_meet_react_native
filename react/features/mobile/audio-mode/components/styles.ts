@@ -16,7 +16,8 @@ export default createStyleSheet({
     deviceRow: {
         alignItems: 'center',
         flexDirection: 'row',
-        height: MD_ITEM_HEIGHT,
+        minHeight: MD_ITEM_HEIGHT,
+        paddingVertical: BaseTheme.spacing[2],
         marginLeft: BaseTheme.spacing[3]
     },
 
@@ -34,7 +35,9 @@ export default createStyleSheet({
     deviceText: {
         color: BaseTheme.palette.text01,
         fontSize: 16,
-        marginLeft: BaseTheme.spacing[5]
+        marginLeft: BaseTheme.spacing[5],
+        flex: 1,
+        flexWrap: 'wrap'
     },
 
     /**

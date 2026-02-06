@@ -14,7 +14,7 @@ const ConnectingPage = () => {
     return (
         <JitsiScreen style = { navigationStyles.connectingScreenContainer }>
             <View style = { navigationStyles.connectingScreenContent as ViewStyle }>
-                <SafeAreaView>
+                <SafeAreaView style = { navigationStyles.safeArea as ViewStyle }>
                     <LoadingIndicator
                         color = { TEXT_COLOR }
                         size = 'large' />

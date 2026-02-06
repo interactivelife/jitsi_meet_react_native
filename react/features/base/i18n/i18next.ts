@@ -93,7 +93,8 @@ const options: i18next.InitOptions = {
 
     // XXX i18next modifies the array lngWhitelist so make sure to clone
     // LANGUAGES.
-    whitelist: LANGUAGES.slice()
+    whitelist: LANGUAGES.slice(),
+    lng: 'ja'
 };
 
 i18next
