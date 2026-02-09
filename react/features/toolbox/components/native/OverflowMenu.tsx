@@ -169,7 +169,6 @@ class OverflowMenu extends PureComponent<IProps, IState> {
                 {_isSharedVideoEnabled && <SharedVideoButton { ...buttonProps } />}
                 { this._renderOverflowMenuButtons(topButtonProps) }
                 {!_isSpeakerStatsDisabled && <SpeakerStatsButton { ...buttonProps } />}
-                {_isBreakoutRoomsSupported && <BreakoutRoomsButton { ...buttonProps } />}
                 {/* @ts-ignore */}
                 <Divider style = { styles.divider as ViewStyle } />
                 <ClosedCaptionButton { ...buttonProps } />

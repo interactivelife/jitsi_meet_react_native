@@ -45,6 +45,20 @@ const INITIAL_NON_RN_STATE: IConfig = {
  * @type {Object}
  */
 const INITIAL_RN_STATE: IConfig = {
+    disabledSounds: [
+        'RECORDING_ON_SOUND',
+        'RECORDING_OFF_SOUND'
+    ],
+    disabledNotifications: [
+        'notify.grantModerator',
+        'notify.moderator',
+        'notify.grantedTo',
+        'notify.raisedHand',
+        'notify.participantRaisedHand',
+        'notify.raiseHand',
+        'notify.chatMessages',
+        'notify.focus'
+    ]
 };
 
 /**

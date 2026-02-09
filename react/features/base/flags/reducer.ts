@@ -7,7 +7,9 @@ import { UPDATE_FLAGS } from './actionTypes';
 /**
  * Default state value for the feature flags.
  */
-const DEFAULT_STATE = {};
+const DEFAULT_STATE = {
+    'breakout-rooms.enabled': false
+};
 
 export interface IFlagsState {
     flags?: Object;
