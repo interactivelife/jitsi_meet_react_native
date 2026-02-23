@@ -5,7 +5,10 @@ export default {
         alignSelf: 'center',
         backgroundColor: BaseTheme.palette.ui01,
         borderRadius: BaseTheme.shape.borderRadius,
-        padding: 6
+        maxWidth: 320,
+        minWidth: 80,
+        paddingHorizontal: 10,
+        paddingVertical: 3
     },
 
     displayNamePadding: {
@@ -14,7 +17,7 @@ export default {
 
     displayNameText: {
         color: BaseTheme.palette.text01,
-        fontSize: 14,
-        fontWeight: 'bold'
+        fontSize: 10,
+        fontWeight: '600'
     }
 };

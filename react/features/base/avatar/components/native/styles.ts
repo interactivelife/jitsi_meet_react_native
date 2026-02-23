@@ -60,18 +60,21 @@ export default {
         ...StyleSheet.absoluteFillObject
     },
 
-    initialsContainer: {
+    initialsContainer: (size: number = DEFAULT_SIZE) => ({
         alignItems: 'center',
-        alignSelf: 'stretch',
-        flex: 1,
-        justifyContent: 'center'
-    },
+        height: size,
+        justifyContent: 'center',
+        width: size
+    }),
 
     initialsText: (size: number = DEFAULT_SIZE) => {
+        const fontSize = size * 0.45;
         return {
             color: 'white',
-            fontSize: size * 0.45,
-            fontWeight: '100'
+            fontSize,
+            fontWeight: '100',
+            lineHeight: fontSize,
+            textAlign: 'center'
         };
     },
 

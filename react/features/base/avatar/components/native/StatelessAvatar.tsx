@@ -129,7 +129,7 @@ export default class StatelessAvatar extends Component<IProps> {
         return (
             <View
                 style = { [
-                    styles.initialsContainer as ViewStyle,
+                    styles.initialsContainer(size) as ViewStyle,
                     {
                         backgroundColor: color
                     }
@@ -152,12 +152,14 @@ export default class StatelessAvatar extends Component<IProps> {
         return (
             <View
                 style = { [
-                    styles.initialsContainer as ViewStyle,
+                    styles.initialsContainer(size) as ViewStyle,
                     {
                         backgroundColor: color
                     }
                 ] }>
-                <Text style = { styles.initialsText(size) as TextStyle }> { initials } </Text>
+                <Text
+                    includeFontPadding = { false }
+                    style = { styles.initialsText(size) as TextStyle }>{ initials }</Text>
             </View>
         );
     }
