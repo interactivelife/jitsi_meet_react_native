@@ -94,7 +94,11 @@ const options: i18next.InitOptions = {
     // XXX i18next modifies the array lngWhitelist so make sure to clone
     // LANGUAGES.
     whitelist: LANGUAGES.slice(),
-    lng: 'ja'
+    lng: (() => {
+        const configuredLanguage = (globalThis as any)?.config?.defaultLanguage;
+
+        return LANGUAGES.includes(configuredLanguage) ? configuredLanguage : undefined;
+    })()
 };
 
 i18next

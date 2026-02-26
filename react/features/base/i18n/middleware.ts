@@ -1,4 +1,6 @@
 import { SET_DYNAMIC_BRANDING_DATA } from '../../dynamic-branding/actionTypes';
+import { OVERWRITE_CONFIG, SET_CONFIG, UPDATE_CONFIG } from '../config/actionTypes';
+import { CONFERENCE_WILL_JOIN } from '../conference/actionTypes';
 import { getConferenceState } from '../conference/functions';
 import MiddlewareRegistry from '../redux/MiddlewareRegistry';
 
@@ -15,6 +17,28 @@ import logger from './logger';
  */
 MiddlewareRegistry.register(store => next => action => {
     switch (action.type) {
+    case CONFERENCE_WILL_JOIN: {
+        const nextLanguage = store.getState()['features/base/config']?.defaultLanguage;
+
+        if (nextLanguage && nextLanguage !== i18next.language) {
+            i18next.changeLanguage(nextLanguage).catch(err => {
+                logger.log('Error changing language on conference join', err);
+            });
+        }
+        break;
+    }
+    case SET_CONFIG:
+    case OVERWRITE_CONFIG:
+    case UPDATE_CONFIG: {
+        const nextLanguage = action.config?.defaultLanguage;
+
+        if (nextLanguage && nextLanguage !== i18next.language) {
+            i18next.changeLanguage(nextLanguage).catch(err => {
+                logger.log('Error changing language from config', err);
+            });
+        }
+        break;
+    }
     case I18NEXT_INITIALIZED:
     case LANGUAGE_CHANGED:
     case SET_DYNAMIC_BRANDING_DATA: {

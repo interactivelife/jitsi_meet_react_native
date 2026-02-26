@@ -84,6 +84,7 @@ export default [
     'deeplinking.disabled',
     'deeplinking.desktop.enabled',
     'defaultLocalDisplayName',
+    'defaultLanguage',
     'defaultRemoteDisplayName',
     'desktopSharingFrameRate',
     'desktopSharingSources',

@@ -17,6 +17,12 @@ export default {
     cacheUserLanguage: Function.prototype,
 
     detect() {
+        const configuredLanguage = (globalThis as any)?.config?.defaultLanguage;
+
+        if (configuredLanguage && LANGUAGES.includes(configuredLanguage)) {
+            return configuredLanguage;
+        }
+
         const { LocaleDetector } = NativeModules;
         const parts = LocaleDetector.locale.replace(/_/, '-').split('-');
         const [ lang, regionOrScript, region ] = parts;

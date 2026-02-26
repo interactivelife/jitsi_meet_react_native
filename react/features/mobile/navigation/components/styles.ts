@@ -50,7 +50,7 @@ export const navigationStyles = {
         textAlign: 'center' as const,
         paddingHorizontal: BaseTheme.spacing[2],
         flexShrink: 1,
-        maxWidth: '80%' as const
+        width: '100%' as const
     },
 
     headerNavigationButton: {
