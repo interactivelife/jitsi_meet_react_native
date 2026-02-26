@@ -25,12 +25,16 @@ import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.KeyEvent;
+import android.view.ScaleGestureDetector;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.facebook.react.modules.core.PermissionListener;
+import com.oney.WebRTCModule.CameraCaptureController;
 
 import org.jitsi.meet.sdk.log.JitsiMeetLogger;
 
@@ -53,8 +57,13 @@ public class JitsiMeetActivity extends AppCompatActivity
 
     private static final String ACTION_JITSI_MEET_CONFERENCE = "org.jitsi.meet.CONFERENCE";
     private static final String JITSI_MEET_CONFERENCE_OPTIONS = "JitsiMeetConferenceOptions";
+    private static final long ZOOM_UNAVAILABLE_TOAST_WINDOW_MS = 1500L;
+    private static final float PINCH_STEP_THRESHOLD = 0.08f;
 
     private boolean isReadyToClose;
+    private long lastZoomUnavailableToastTimeMs;
+    private ScaleGestureDetector zoomGestureDetector;
+    private float pendingPinchZoomDelta;
 
     private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -104,6 +113,7 @@ public class JitsiMeetActivity extends AppCompatActivity
 
         setContentView(R.layout.activity_jitsi_meet);
         this.jitsiView = findViewById(R.id.jitsiView);
+        setupZoomGestureDetector();
 
         registerForBroadcastMessages();
 
@@ -299,6 +309,30 @@ public class JitsiMeetActivity extends AppCompatActivity
     }
 
     @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        int keyCode = event.getKeyCode();
+        if (keyCode == KeyEvent.KEYCODE_VOLUME_UP || keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+            if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                applyZoom(keyCode == KeyEvent.KEYCODE_VOLUME_UP);
+            }
+            return true;
+        }
+        return super.dispatchKeyEvent(event);
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(android.view.MotionEvent event) {
+        if (zoomGestureDetector != null) {
+            zoomGestureDetector.onTouchEvent(event);
+            if (event.getActionMasked() == android.view.MotionEvent.ACTION_UP
+                || event.getActionMasked() == android.view.MotionEvent.ACTION_CANCEL) {
+                pendingPinchZoomDelta = 0f;
+            }
+        }
+        return super.dispatchTouchEvent(event);
+    }
+
+    @Override
     public void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
 
@@ -341,6 +375,41 @@ public class JitsiMeetActivity extends AppCompatActivity
         }
 
         LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, intentFilter);
+    }
+
+    private void setupZoomGestureDetector() {
+        zoomGestureDetector = new ScaleGestureDetector(this, new ScaleGestureDetector.SimpleOnScaleGestureListener() {
+            @Override
+            public boolean onScale(ScaleGestureDetector detector) {
+                pendingPinchZoomDelta += detector.getScaleFactor() - 1.0f;
+
+                while (pendingPinchZoomDelta >= PINCH_STEP_THRESHOLD) {
+                    applyZoom(true);
+                    pendingPinchZoomDelta -= PINCH_STEP_THRESHOLD;
+                }
+                while (pendingPinchZoomDelta <= -PINCH_STEP_THRESHOLD) {
+                    applyZoom(false);
+                    pendingPinchZoomDelta += PINCH_STEP_THRESHOLD;
+                }
+                return true;
+            }
+        });
+    }
+
+    private boolean applyZoom(boolean zoomIn) {
+        boolean success = zoomIn
+            ? CameraCaptureController.zoomInActiveCamera()
+            : CameraCaptureController.zoomOutActiveCamera();
+
+        if (!success) {
+            long now = System.currentTimeMillis();
+            if (now - lastZoomUnavailableToastTimeMs >= ZOOM_UNAVAILABLE_TOAST_WINDOW_MS) {
+                lastZoomUnavailableToastTimeMs = now;
+                Toast.makeText(this, "Zoom unavailable for current camera", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        return success;
     }
 
     private void onBroadcastReceived(Intent intent) {

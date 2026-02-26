@@ -16,6 +16,7 @@ echo "Publishing Jitsi Meet SDK ${SDK_VERSION} to Maven Local (${REPO_PATH})"
 echo ""
 
 pushd "${THIS_DIR}/../"
+../scripts/apply-local-overrides.sh
 ./gradlew clean
 ./gradlew assembleRelease
 ./gradlew publish

@@ -54,6 +54,8 @@ public class UsbVideoCapturer implements VideoCapturer {
     private Object cameraViewProxy;
     private SurfaceTexture headlessSurfaceTexture;
     private Surface headlessSurface;
+    private volatile int currentZoom = 0;
+    private volatile int maxZoom = 0;
 
     public UsbVideoCapturer(Context context) {
         this.appContext = context.getApplicationContext();
@@ -338,6 +340,7 @@ public class UsbVideoCapturer implements VideoCapturer {
                 }
                 if (connected) {
                     updatePreviewSizeFromHelper();
+                    updateZoomBoundsFromHelper();
                     notifyStarted(true);
                     Log.d(TAG, "USB device connected for capture");
                 }
@@ -467,6 +470,95 @@ public class UsbVideoCapturer implements VideoCapturer {
         }
     }
 
+    public boolean adjustZoom(float zoomDelta) {
+        if (cameraHelper == null || cameraHelperClass == null) {
+            Log.d(TAG, "Zoom ignored: USB camera helper not initialized");
+            return false;
+        }
+
+        int localMaxZoom = maxZoom;
+        if (localMaxZoom <= 0) {
+            updateZoomBoundsFromHelper();
+            localMaxZoom = maxZoom;
+        }
+        if (localMaxZoom <= 0) {
+            Log.d(TAG, "USB zoom not supported by current helper implementation");
+            return false;
+        }
+
+        int targetZoom = Math.max(0, Math.min(localMaxZoom, currentZoom + Math.round(zoomDelta * localMaxZoom)));
+        if (targetZoom == currentZoom) {
+            return true;
+        }
+
+        if (setZoomViaHelper(targetZoom)) {
+            currentZoom = targetZoom;
+            Log.d(TAG, "Applied USB camera zoom current=" + currentZoom + " max=" + localMaxZoom);
+            return true;
+        }
+
+        return false;
+    }
+
+    private void updateZoomBoundsFromHelper() {
+        int discoveredMaxZoom = 0;
+        int discoveredCurrentZoom = currentZoom;
+
+        if (cameraHelper == null || cameraHelperClass == null) {
+            return;
+        }
+
+        try {
+            Method getMaxZoom = cameraHelperClass.getMethod("getMaxZoom");
+            Object maxObj = getMaxZoom.invoke(cameraHelper);
+            if (maxObj instanceof Integer) {
+                discoveredMaxZoom = (Integer) maxObj;
+            }
+        } catch (Throwable ignored) {
+            // best-effort helper compatibility
+        }
+
+        try {
+            Method getZoom = cameraHelperClass.getMethod("getZoom");
+            Object zoomObj = getZoom.invoke(cameraHelper);
+            if (zoomObj instanceof Integer) {
+                discoveredCurrentZoom = (Integer) zoomObj;
+            }
+        } catch (Throwable ignored) {
+            // best-effort helper compatibility
+        }
+
+        maxZoom = Math.max(discoveredMaxZoom, 0);
+        currentZoom = Math.max(Math.min(discoveredCurrentZoom, maxZoom), 0);
+    }
+
+    private boolean setZoomViaHelper(int targetZoom) {
+        if (cameraHelper == null || cameraHelperClass == null) {
+            return false;
+        }
+
+        try {
+            Method setZoom = cameraHelperClass.getMethod("setZoom", int.class);
+            setZoom.invoke(cameraHelper, targetZoom);
+            return true;
+        } catch (Throwable ignored) {
+            // best-effort helper compatibility
+        }
+
+        // Common UVC helper fallback API shape:
+        // setModelValue(flag, value)
+        try {
+            Method setModelValue = cameraHelperClass.getMethod("setModelValue", int.class, int.class);
+            final int PU_ZOOM_ABS = 11;
+            setModelValue.invoke(cameraHelper, PU_ZOOM_ABS, targetZoom);
+            return true;
+        } catch (Throwable ignored) {
+            // best-effort helper compatibility
+        }
+
+        return false;
+    }
+
     private void stopCaptureInternal() {
         if (cameraHelper != null && cameraHelperClass != null) {
             invokeOptional(cameraHelperClass, cameraHelper, "stopPreview");
@@ -485,6 +577,8 @@ public class UsbVideoCapturer implements VideoCapturer {
         }
 
         notifyStopped();
+        currentZoom = 0;
+        maxZoom = 0;
         Log.d(TAG, "USB UVC capture stopped");
     }
 
