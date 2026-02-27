@@ -25,7 +25,6 @@ import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.ScaleGestureDetector;
 import android.widget.Toast;
 
@@ -306,18 +305,6 @@ public class JitsiMeetActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
         JitsiMeetActivityDelegate.onBackPressed();
-    }
-
-    @Override
-    public boolean dispatchKeyEvent(KeyEvent event) {
-        int keyCode = event.getKeyCode();
-        if (keyCode == KeyEvent.KEYCODE_VOLUME_UP || keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
-            if (event.getAction() == KeyEvent.ACTION_DOWN) {
-                applyZoom(keyCode == KeyEvent.KEYCODE_VOLUME_UP);
-            }
-            return true;
-        }
-        return super.dispatchKeyEvent(event);
     }
 
     @Override

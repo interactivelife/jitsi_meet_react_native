@@ -113,7 +113,7 @@
         "installExtensionText": "Google カレンダーと Office 365 統合のための拡張機能をインストールしてください"
     },
     "connectingOverlay": {
-        "joiningRoom": "ミーティングに参加しています…"
+        "joiningRoom": "接続中"
     },
     "connection": {
         "ATTACHED": "アタッチされました",
@@ -694,7 +694,7 @@
         "close": "閉じる",
         "headings": {
             "lobby": "ロビー ({{count}})",
-            "participantsList": "ミーティング参加者 ({{count}})",
+            "participantsList": "参加者 ({{count}})",
             "waitingLobby": "ロビーで待機中 ({{count}})"
         },
         "search": "参加者を検索",
@@ -995,7 +995,7 @@
             "document": "共有ドキュメントの切り替え",
             "download": "アプリのダウンロード",
             "embedMeeting": "ミーティングの埋め込み",
-            "endConference": "全員のミーティングを終了",
+            "endConference": "全員終了",
             "enterFullScreen": "フルスクリーン表示",
             "expand": "展開",
             "feedback": "フィードバックを残す",
@@ -1006,7 +1006,7 @@
             "invite": "人を招待",
             "kick": "参加者を追放",
             "laugh": "笑",
-            "leaveConference": "ミーティングから退出",
+            "leaveConference": "退出",
             "like": "いいね!",
             "lobbyButton": "ロビーモードの有効 / 無効",
             "localRecording": "ローカル録画コントロールの切り替え",
@@ -1063,7 +1063,7 @@
         "download": "アプリのダウンロード",
         "e2ee": "エンドツーエンドの暗号化",
         "embedMeeting": "ミーティングの埋め込み",
-        "endConference": "全員のミーティングを終了",
+        "endConference": "全員終了",
         "enterFullScreen": "フルスクリーン表示",
         "enterTileView": "タイルビューを開始",
         "exitFullScreen": "フルスクリーンを終了",
@@ -1075,7 +1075,7 @@
         "joinBreakoutRoom": "ブレイクアウトルームに参加",
         "laugh": "笑",
         "leaveBreakoutRoom": "ブレイクアウトルームを退出",
-        "leaveConference": "ミーティングから退出",
+        "leaveConference": "退出",
         "like": "いいね!",
         "lobbyButtonDisable": "ロビーモードを無効",
         "lobbyButtonEnable": "ロビーモードを有効",
@@ -1170,6 +1170,7 @@
         "ldTooltip": "低画質ビデオの視聴",
         "lowDefinition": "低画質",
         "performanceSettings": "パフォーマンス設定",
+        "recording": "録画中",
         "sd": "SD",
         "sdTooltip": "標準画質ビデオの視聴",
         "standardDefinition": "標準画質"

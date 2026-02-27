@@ -33,13 +33,17 @@ export default {
     },
 
     expandedLabelTextContainer: {
+        alignSelf: 'center',
         borderRadius: 3,
+        maxWidth: '95%',
         paddingHorizontal: LABEL_MARGIN,
         paddingVertical: LABEL_MARGIN / 2
     },
 
     expandedLabelText: {
-        color: ColorPalette.white
+        color: ColorPalette.white,
+        flexShrink: 1,
+        textAlign: 'center'
     },
 
     /**

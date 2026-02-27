@@ -76,13 +76,28 @@ function Toolbox(props: IProps) {
     });
 
     const bottomEdge = Platform.OS === 'ios' && _visible;
-    const { buttonStylesBorderless, hangupButtonStyles } = _styles;
+    const { buttonStylesBorderless, hangupButtonStyles, micCamOnButtonStyles, micCamOffButtonStyles } = _styles;
     const style = { ...styles.toolbox };
 
     // We have only hangup and raisehand button in _iAmVisitor mode
     if (_iAmVisitor) {
         style.justifyContent = 'center';
     }
+
+    const getButtonStyleProps = (key: string) => {
+        if (key === 'hangup') {
+            return { styles: hangupButtonStyles };
+        }
+
+        if (key === 'microphone' || key === 'camera') {
+            return {
+                styles: micCamOnButtonStyles,
+                toggledStyles: micCamOffButtonStyles
+            };
+        }
+
+        return { styles: buttonStylesBorderless };
+    };
 
     const renderToolboxButtons = () => {
         if (!mainMenuButtons?.length) {
@@ -99,7 +114,7 @@ function Toolbox(props: IProps) {
                             handleClick = { () => dispatch(customButtonPressed(key, text)) }
                             isToolboxButton = { true }
                             key = { key }
-                            styles = { key === 'hangup' ? hangupButtonStyles : buttonStylesBorderless } />
+                            { ...getButtonStyleProps(key) } />
                     ))
                 }
             </>

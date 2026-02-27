@@ -161,6 +161,24 @@ ColorSchemeRegistry.register('Toolbox', {
         underlayColor: BaseTheme.palette.ui04
     },
 
+    micCamOnButtonStyles: {
+        iconStyle: whiteToolbarButtonIcon,
+        style: {
+            ...toolbarButton,
+            backgroundColor: BaseTheme.palette.success01
+        },
+        underlayColor: 'transparent'
+    },
+
+    micCamOffButtonStyles: {
+        iconStyle: whiteToolbarButtonIcon,
+        style: {
+            ...toolbarButton,
+            backgroundColor: schemeColor('hangup')
+        },
+        underlayColor: 'transparent'
+    },
+
     reactionDialog: {
         position: 'absolute',
         width: '100%',

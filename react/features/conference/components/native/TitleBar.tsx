@@ -26,6 +26,11 @@ import styles from './styles';
 interface IProps {
 
     /**
+     * Whether the conference is in broadcast mode.
+     */
+    _broadcastMode: boolean;
+
+    /**
      * Whether the audio device button should be displayed.
      */
     _audioDeviceButtonEnabled: boolean;
@@ -97,7 +102,7 @@ const TitleBar = (props: IProps) => {
                     </View>
                 }
                 {
-                    props._roomNameEnabled
+                    props._roomNameEnabled && !props._broadcastMode
                     && <View style = { styles.roomNameView as ViewStyle }>
                         <Text
                             numberOfLines = { 1 }
@@ -144,6 +149,7 @@ function _mapStateToProps(state: IReduxState) {
 
     return {
         _audioDeviceButtonEnabled: getFeatureFlag(state, AUDIO_DEVICE_BUTTON_ENABLED, true),
+        _broadcastMode: Boolean(state['features/base/config']?.broadcastMode),
         _conferenceTimerEnabled:
             Boolean(getFeatureFlag(state, CONFERENCE_TIMER_ENABLED, true) && !hideConferenceTimer && startTimestamp),
         _isParticipantsPaneEnabled: isParticipantsPaneEnabled(state),

@@ -158,7 +158,7 @@
         "startClosedCaptionsButton": "Start closed captions"
     },
     "connectingOverlay": {
-        "joiningRoom": "Connecting you to your meeting…"
+        "joiningRoom": "Connecting"
     },
     "connection": {
         "ATTACHED": "Attached",
@@ -905,7 +905,7 @@
         "close": "Close",
         "headings": {
             "lobby": "Lobby ({{count}})",
-            "participantsList": "Meeting participants ({{count}})",
+            "participantsList": "Participants ({{count}})",
             "viewerRequests": "Viewers requests {{count}}",
             "visitorInQueue": " (waiting {{count}})",
             "visitorRequests": " (requests {{count}})",
@@ -1068,7 +1068,7 @@
         "error": "Recording failed. Please try again.",
         "errorFetchingLink": "Error fetching recording link.",
         "expandedOff": "Recording has stopped",
-        "expandedOn": "The meeting is currently being recorded",
+        "expandedOn": "Recording only",
         "expandedPending": "Recording is being started…",
         "failedToStart": "Recording failed to start",
         "fileSharingdescription": "Share the recording link with the meeting participants",
@@ -1275,7 +1275,7 @@
             "documentOpen": "Open shared document",
             "download": "Download our apps",
             "embedMeeting": "Embed meeting",
-            "endConference": "End meeting for all",
+            "endConference": "End for all",
             "enterFullScreen": "View full screen",
             "enterTileView": "Enter tile view",
             "exitFullScreen": "Exit full screen",
@@ -1292,7 +1292,7 @@
             "invite": "Invite people",
             "kick": "Kick participant",
             "laugh": "Laugh",
-            "leaveConference": "Leave meeting",
+            "leaveConference": "Leave",
             "like": "Thumbs Up",
             "linkToSalesforce": "Link to Salesforce",
             "lobbyButton": "Enable/disable lobby mode",
@@ -1368,7 +1368,7 @@
         "e2ee": "End-to-End Encryption",
         "embedMeeting": "Embed meeting",
         "enableNoiseSuppression": "Enable extra noise suppression (BETA)",
-        "endConference": "End meeting for all",
+        "endConference": "End for all",
         "enterFullScreen": "View full screen",
         "enterTileView": "Enter tile view",
         "exitFullScreen": "Exit full screen",
@@ -1382,7 +1382,7 @@
         "joinBreakoutRoom": "Join breakout room",
         "laugh": "Laugh",
         "leaveBreakoutRoom": "Leave breakout room",
-        "leaveConference": "Leave meeting",
+        "leaveConference": "Leave",
         "like": "Thumbs Up",
         "linkToSalesforce": "Link to Salesforce",
         "lobbyButtonDisable": "Disable lobby mode",
@@ -1493,7 +1493,7 @@
         "ldTooltip": "Viewing low definition video",
         "lowDefinition": "Low definition",
         "performanceSettings": "Performance settings",
-        "recording": "This meeting is being recorded.",
+        "recording": "Recording in progress",
         "sd": "SD",
         "sdTooltip": "Viewing standard definition video",
         "standardDefinition": "Standard definition",

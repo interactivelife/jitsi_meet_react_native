@@ -148,12 +148,22 @@ public class CameraCaptureController extends AbstractVideoCaptureController {
     }
 
     @Override
+    public void startCapture() {
+        ACTIVE_CONTROLLER.set(this);
+        super.startCapture();
+    }
+
+    @Override
     public boolean stopCapture() {
-        boolean stopped = super.stopCapture();
-        if (stopped && ACTIVE_CONTROLLER.compareAndSet(this, null)) {
+        return super.stopCapture();
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        if (ACTIVE_CONTROLLER.compareAndSet(this, null)) {
             Log.d(TAG, "Cleared active camera capture controller");
         }
-        return stopped;
     }
 
     /**
