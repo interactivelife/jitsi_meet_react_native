@@ -96,7 +96,7 @@ const TitleBar = (props: IProps) => {
                 pointerEvents = 'box-none'
                 style = { styles.roomNameWrapper as ViewStyle }>
                 {
-                    props._conferenceTimerEnabled
+                    props._conferenceTimerEnabled && !props._broadcastMode
                     && <View style = { styles.roomTimerView as ViewStyle }>
                         <ConferenceTimer textStyle = { styles.roomTimer } />
                     </View>

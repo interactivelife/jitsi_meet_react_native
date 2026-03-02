@@ -136,7 +136,7 @@ export default {
     },
 
     roomTimer: {
-        ...BaseTheme.typography.bodyShortBold,
+        ...BaseTheme.typography.bodyShortRegularSmall,
         color: BaseTheme.palette.text01,
         lineHeight: 14,
         textAlign: 'center'
@@ -147,9 +147,9 @@ export default {
         borderRadius: BaseTheme.shape.borderRadius,
         height: 32,
         justifyContent: 'center',
-        paddingHorizontal: BaseTheme.spacing[2],
+        paddingHorizontal: BaseTheme.spacing[3],
         paddingVertical: BaseTheme.spacing[1],
-        minWidth: 50
+        minWidth: 68
     },
 
     roomName: {
